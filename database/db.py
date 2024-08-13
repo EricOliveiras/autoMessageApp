@@ -41,6 +41,14 @@ def get_contacts():
     conn.close()
     return contacts
 
+def get_contacts_with_send_message_false():
+    conn = sqlite3.connect('contatos.db')
+    c = conn.cursor()
+    c.execute("SELECT id, contact_name, contact_number, message_sent FROM contatos WHERE message_sent = 0")
+    contacts = c.fetchall()
+    conn.close()
+    return contacts
+
 
 def get_contact(contact_number):
     conn = sqlite3.connect('contatos.db')
