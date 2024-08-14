@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Mensagem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Enviar Mensagem</h1>
+    {% if contacts_count > 0 %}
+        <p>Total de contatos: {{ contacts_count }}</p>
+        <p>Contatos com mensagem enviada: {{ contacts_sent_true }}</p>
+        <p>Contatos a receber mensagem: {{ contacts_sent_false }}</p>
+        <form action="{{ url_for('send_message') }}" method="post">
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <br>
+            <label for="num_contacts">Quantidade de contatos:</label>
+            <select id="num_contacts" name="num_contacts">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <br>
+            <input type="submit" value="Enviar Mensagem" onclick="return showMessage()">
+        </form>
+
+        <!-- Botão para definir message_sent como false -->
+        <form action="{{ url_for('reset_message_sent') }}" method="post" onsubmit="return confirmReset()">
+            <input type="submit" value="Resetar Mensagem Enviada">
+        </form>
+
+        <!-- Botão para ir para a página de contatos -->
+        <a href="{{ url_for('list_contacts') }}" class="button">Ver Contatos</a>
+
+    {% else %}
+        <p>Nenhum contato encontrado no banco de dados.</p>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

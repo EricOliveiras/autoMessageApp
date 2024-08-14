@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Contatos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Lista de Contatos</h1>
+    <p>Total de Contatos: {{ total_contacts }}</p>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Número</th>
+            <th>Mensagem Enviada</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact[0] }}</td>
+                <td>{{ contact[1] }}</td>
+                <td>{{ contact[2] }}</td>
+                <td>{{ 'Sim' if contact[3] else 'Não' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('send_message') }}" class="button">Voltar</a>
+
+    <!-- Paginação -->
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('list_contacts', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+
+        {% if page < total_pages %}
+            <a href="{{ url_for('list_contacts', page=page+1) }}">Próximo &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

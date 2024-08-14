@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Arquivo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Enviar Arquivo</h1>
+    <form action="{{ url_for('process_file') }}" method="post" enctype="multipart/form-data">
+        <label for="file">Selecione um arquivo:</label>
+        <input type="file" id="file" name="file" required accept=".xlsx">
+        <input type="submit" value="Enviar">
+    </form>
+
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <p>Carregando...</p>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
