@@ -41,6 +41,7 @@ def get_contacts():
     conn.close()
     return contacts
 
+
 def get_contacts_with_send_message_false():
     conn = sqlite3.connect('contatos.db')
     c = conn.cursor()
@@ -109,3 +110,27 @@ def update_all_contacts_message_sent_false():
     finally:
         c.close()
         conn.close()
+
+
+def get_all_contacts_paginated(page, per_page):
+    offset = (page - 1) * per_page
+    conn = sqlite3.connect('contatos.db')  # Substitua com o nome do seu banco de dados
+    cursor = conn.cursor()
+
+    # Obter contatos paginados
+    cursor.execute("SELECT id, contact_name, contact_number, message_sent FROM contatos LIMIT ? OFFSET ?",
+                   (per_page, offset))
+    contacts = cursor.fetchall()
+
+    # Obter o número total de contatos para calcular o número de páginas
+    cursor.execute("SELECT COUNT(*) FROM contatos")
+    total_contacts = cursor.fetchone()[0]
+
+    conn.close()
+
+    return {
+        "contacts": contacts,
+        "total_contacts": total_contacts,
+        "total_pages": (total_contacts + per_page - 1) // per_page
+        # Divisão para cima para garantir que haja espaço para a última página
+    }
