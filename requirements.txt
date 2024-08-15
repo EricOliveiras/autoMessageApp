@@ -2,3 +2,4 @@ selenium
 openpyxl
 flask
 chromedriver-autoinstaller
+PyInstaller
