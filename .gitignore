@@ -25,3 +25,7 @@ ENV/
 pip-wheel-metadata/
 
 *.db
+
+build
+dist
+app.spec
