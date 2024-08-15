@@ -9,6 +9,7 @@
 <body>
 <div class="container">
     <h1>Enviar Mensagem</h1>
+    <a href="{{ url_for('upload_file') }}" class="button">Adicionar contatos</a>
     {% if contacts_count > 0 %}
         <p>Total de contatos: {{ contacts_count }}</p>
         <p>Contatos com mensagem enviada: {{ contacts_sent_true }}</p>
