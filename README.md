@@ -36,6 +36,7 @@ mensagens enviadas, facilitando o acompanhamento e a comunicação com a comunid
 - Carregar contatos a partir de um arquivo Excel.
 - Enviar mensagens personalizadas para os contatos.
 - Atualizar o status de mensagens enviadas.
+- Mostra uma lista com todos os contatos.
 
 ## Observações
 
