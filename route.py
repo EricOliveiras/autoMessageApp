@@ -1,13 +1,27 @@
+import os
 import time
 from selenium import webdriver
 from message import send_message_to_contact
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 from read_document import read_excel_and_save_to_database
 from database.db import count_contacts, count_contacts_with_message_sent_true, \
     update_all_contacts_message_sent_false, get_contacts_with_send_message_false, get_all_contacts_paginated
 
+# Defina o diretório de upload para as imagens
+UPLOAD_FOLDER = 'uploads/'  # Certifique-se de que esse diretório exista ou crie-o
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Função para verificar se a extensão do arquivo é permitida
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def create_routes(app):
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    # Verifica se o diretório de upload existe, se não, cria
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+        print(f"Diretório de upload criado: {app.config['UPLOAD_FOLDER']}")
+
     @app.route("/")
     def index():
         num_contacts = count_contacts()
@@ -24,6 +38,7 @@ def create_routes(app):
     def process_file():
         file = request.files['file']
         if file.filename == '':
+            flash('Nenhum arquivo selecionado.')
             return redirect(url_for('upload_file'))
 
         read_excel_and_save_to_database(file)
@@ -39,6 +54,15 @@ def create_routes(app):
         if request.method == 'POST':
             num_contacts_to_send = int(request.form['num_contacts'])
             message = request.form['message']
+
+            # Processar upload de imagem, se houver
+            image_file = request.files.get('image')
+            image_path = None
+
+            if image_file and allowed_file(image_file.filename):
+                image_filename = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
+                image_file.save(image_filename)
+                image_path = image_filename
 
             # Iniciar o navegador Chrome
             driver = webdriver.Chrome()
@@ -62,7 +86,7 @@ def create_routes(app):
                     print(f"Mensagem já enviada para {contact_name}.")
                     continue
 
-                send_message_to_contact(driver, contact_id, contact_name, contact_number, message)
+                send_message_to_contact(driver, contact_id, contact_name, contact_number, message, image_path)
 
             # Fechar o navegador
             driver.quit()
