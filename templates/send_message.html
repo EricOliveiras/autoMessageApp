@@ -14,10 +14,18 @@
         <p>Total de contatos: {{ contacts_count }}</p>
         <p>Contatos com mensagem enviada: {{ contacts_sent_true }}</p>
         <p>Contatos a receber mensagem: {{ contacts_sent_false }}</p>
-        <form action="{{ url_for('send_message') }}" method="post">
+
+        <!-- Formulário para enviar mensagem e imagem -->
+        <form action="{{ url_for('send_message') }}" method="post" enctype="multipart/form-data">
             <label for="message">Mensagem:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
+            <textarea id="message" name="message" rows="4"></textarea>
             <br>
+
+            <!-- input para selecionar imagem -->
+            <label for="image">Selecionar Imagem:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <br>
+
             <label for="num_contacts">Quantidade de contatos:</label>
             <select id="num_contacts" name="num_contacts">
                 <option value="10">10</option>

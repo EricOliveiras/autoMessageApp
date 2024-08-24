@@ -29,3 +29,6 @@ pip-wheel-metadata/
 build
 dist
 app.spec
+
+# Images
+uploads/
